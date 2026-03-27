@@ -16,8 +16,7 @@ NYTC2026/
 │   ├── python_scripts
 │   └── jupyter_notebooks
 │
-└── material/
-    └── requirements.txt
+└── requirements.txt
 ```
 
 ### `code/`
