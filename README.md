@@ -51,8 +51,6 @@ Current tutorials include:
   pip install -r requirements.txt
   ```
 
-in your respective terminal (Terminal on Mac, Powershell on Windows).
-
 ## Notes
 
 Some scripts may require a connected UGOT robot to function properly.
