@@ -29,13 +29,8 @@ The code includes:
 * Model testing and debugging notebooks
 * Supporting scripts used during development
 
-### `material/`
 
-This folder contains setup guides to help users prepare their development environment.
-
-Current material include:
-
-* **`requirements.txt`**
+### `requirements.txt`
   A shortcut to install all the modules.
   
   ```bash
