@@ -45,7 +45,7 @@ Current tutorials include:
   Instructions for installing Visual Studio Code and recommended extensions for Python development.
 
 * **`requirements.txt`**
-  Shortcut to install all the modules.
+  A shortcut to install all the modules.
   
   ```bash
   pip install -r requirements.txt
