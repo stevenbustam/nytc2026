@@ -17,8 +17,6 @@ NYTC2026/
 │   └── jupyter_notebooks
 │
 └── material/
-    ├── download_python.md
-    ├── download_vscode.md
     └── requirements.txt
 ```
 
@@ -36,13 +34,7 @@ The code includes:
 
 This folder contains setup guides to help users prepare their development environment.
 
-Current tutorials include:
-
-* **`download_python.md`**
-  A guide for installing Python which is required to run the project.
-
-* **`download_vscode.md`**
-  Instructions for installing Visual Studio Code and recommended extensions for Python development.
+Current material include:
 
 * **`requirements.txt`**
   A shortcut to install all the modules.
