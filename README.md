@@ -13,8 +13,8 @@ The project focuses on using **Python and computer vision** to enable a robot to
 NYTC2026/
 │
 ├── code/
-│   ├── python_scripts
-│   └── jupyter_notebooks
+│   ├── scripts
+│   └── notebooks
 │
 └── requirements.txt
 ```
