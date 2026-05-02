@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NYTC 2026 Preliminary stage — Gameplay Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c14;
+    --panel: #0d1525;
+    --border: #1e3a5f;
+    --accent: #00d4ff;
+    --accent2: #7b2fff;
+    --accent3: #ff6b35;
+    --green: #00ff88;
+    --red: #ff3355;
+    --yellow: #ffd700;
+    --text: #c8dff0;
+    --muted: #5a7a9a;
+    --glow: 0 0 20px rgba(0,212,255,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    text-align: center;
+    padding: 60px 0 50px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 60px;
+  }
+
+  .header-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.1s;
+  }
+
+  header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 0.05em;
+    line-height: 1.1;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.3s;
+  }
+
+  header h1 span {
+    color: var(--accent);
+    text-shadow: var(--glow);
+  }
+
+  .header-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 14px;
+    letter-spacing: 0.15em;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.5s;
+  }
+
+  .email {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text);
+    margin-top: 14px;
+    letter-spacing: 0.15em;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards 0.5s;
+  }
+
+  /* ── PART SECTION ── */
+  .part {
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s ease forwards;
+  }
+  .part:nth-child(1) { animation-delay: 0.6s; }
+  .part:nth-child(2) { animation-delay: 0.8s; }
+  .part:nth-child(3) { animation-delay: 1.0s; }
+
+  .part-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 8px;
+  }
+
+  .part-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    padding: 5px 12px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .part h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+  }
+
+  .part-aim {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 28px;
+    padding-left: 2px;
+  }
+
+  /* ── TWO COLUMN LAYOUT ── */
+  .part-body {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 720px) {
+    .part-body { grid-template-columns: 1fr; }
+  }
+
+  /* ── PANELS ── */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent), transparent);
+  }
+
+  .panel h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .task-list {
+    list-style: none;
+  }
+
+  .task-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(30,58,95,0.5);
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .task-list li:last-child { border-bottom: none; }
+
+  .task-letter {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent2);
+    min-width: 18px;
+    padding-top: 1px;
+  }
+
+  .rules-list {
+    list-style: none;
+  }
+
+  .rules-list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 7px 0;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--muted);
+    border-bottom: 1px solid rgba(30,58,95,0.4);
+  }
+  .rules-list li:last-child { border-bottom: none; }
+
+  .rule-letter {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent3);
+    min-width: 16px;
+    padding-top: 1px;
+  }
+
+  /* ── DIAGRAM PANELS ── */
+  .diagram-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .diagram-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), transparent);
+  }
+
+  .diagram-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  /* ── SVG DIAGRAMS ── */
+  svg {
+    width: 100%;
+    overflow: visible;
+  }
+
+  /* Robot body */
+  .robot-body { fill: #1a3a5c; stroke: var(--accent); stroke-width: 1.5; }
+  .robot-wheel { fill: #0d1f33; stroke: var(--accent); stroke-width: 1; }
+  .robot-sensor { fill: var(--green); }
+  .robot-camera { fill: var(--accent3); }
+
+  /* Animated dash line */
+  .route-line {
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    fill: none;
+    stroke-dasharray: 6 4;
+    animation: dashMove 2s linear infinite;
+  }
+
+  .route-solid {
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    fill: none;
+  }
+
+  @keyframes dashMove {
+    to { stroke-dashoffset: -20; }
+  }
+
+  .stop-box { fill: var(--red); }
+  .go-box { fill: var(--green); }
+
+  /* Pulsing robot glow */
+  .robot-glow {
+    animation: robotPulse 2s ease-in-out infinite;
+  }
+  @keyframes robotPulse {
+    0%, 100% { opacity: 0.3; r: 18px; }
+    50% { opacity: 0.6; r: 24px; }
+  }
+
+  /* Arrow head */
+  .arrow { fill: var(--accent); }
+
+  /* Token */
+  .token-body { fill: #c8860a; stroke: var(--yellow); stroke-width: 1.5; }
+  .token-tag { fill: #0d1f33; stroke: var(--yellow); stroke-width: 1; }
+
+  /* Face nodes */
+  .face-node { fill: var(--panel); stroke: var(--muted); stroke-width: 1.5; }
+  .face-node.active { stroke: var(--green); stroke-width: 2; }
+
+  /* Box markers */
+  .box-a { fill: transparent; stroke: var(--accent2); stroke-width: 2; stroke-dasharray: 4 3; }
+  .box-b { fill: transparent; stroke: var(--accent3); stroke-width: 1.5; }
+
+  /* Signal waves */
+  .signal-wave {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1;
+    opacity: 0;
+    animation: signalPulse 1.8s ease-out infinite;
+  }
+  .signal-wave:nth-child(2) { animation-delay: 0.4s; }
+  .signal-wave:nth-child(3) { animation-delay: 0.8s; }
+
+  @keyframes signalPulse {
+    0% { opacity: 0.8; transform: scale(0.8); }
+    100% { opacity: 0; transform: scale(1.4); }
+  }
+
+  /* ── DIVIDER ── */
+  .part-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0;
+  }
+  .part-divider::before, .part-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .divider-dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: var(--glow);
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .badge-stop { background: rgba(255,51,85,0.2); color: var(--red); border: 1px solid var(--red); }
+  .badge-go { background: rgba(0,255,136,0.15); color: var(--green); border: 1px solid var(--green); }
+  .badge-auto { background: rgba(123,47,255,0.2); color: var(--accent2); border: 1px solid var(--accent2); }
+
+  /* Signal badge row */
+  .signal-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 14px 0 10px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scan line effect on panels */
+  @keyframes scanline {
+    0% { top: 0%; }
+    100% { top: 100%; }
+  }
+
+  .scan-overlay {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(transparent, rgba(0,212,255,0.12), transparent);
+    animation: scanline 4s linear infinite;
+    pointer-events: none;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── HIGHLIGHT ── */
+  .hl { color: #fff; font-weight: 600; }
+
+  /* ── BOX LABELS ── */
+  text.label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    fill: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  text.label-bright {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    fill: var(--accent);
+    letter-spacing: 0.08em;
+  }
+  text.label-big {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 8px;
+    fill: var(--accent2);
+    letter-spacing: 0.1em;
+  }
+
+  /* Info strip */
+  .info-strip {
+    background: rgba(0,212,255,0.04);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-left: 3px solid var(--accent2);
+    padding: 10px 16px;
+    margin-top: 14px;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .info-strip strong { color: var(--accent2); }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-label">◈ NYTC 2026 Preliminary Stage · Official Ruleset</div>
+    <h1>Preliminary <span>GUIDE</span></h1>
+    <div class="header-sub"> THREE-PART AUTONOMOUS ROBOT CHALLENGE </div>
+    <div class="email"> stevenmab9@gmail.com</div>
+    <div class="email"> gavin.elroy.santoso.12345@gmail.com</div>
+    <div class="email"> white.target2021@gmail.com</div>
+  </header>
+
+  <!-- ════════════════════════════════════════════
+       PART 1
+  ════════════════════════════════════════════ -->
+  <section class="part" style="animation-delay:0.6s">
+    <div class="part-header">
+      <div class="part-num">Part 01</div>
+      <h2>GAMEPLAY</h2>
+    </div>
+    <div class="part-aim">▸ AIM: Use of colour/code recognition and algorithm for positioning</div>
+
+    <div class="part-body">
+      <!-- Tasks & Rules -->
+      <div>
+        <div class="panel" style="margin-bottom:16px">
+          <div class="scan-overlay"></div>
+          <h3>Tasks</h3>
+          <ul class="task-list">
+            <li><span class="task-letter">A</span><span>Robot <span class="hl">recognises red colour</span></span></li>
+            <li><span class="task-letter">B</span><span>Robot <span class="hl">recognises green colour</span> and moves off start point</span></li>
+            <li><span class="task-letter">C</span><span>Robot <span class="hl">recognises April tag</span> and centralises</span></li>
+            <li><span class="task-letter">D</span><span>Robot <span class="hl">picks up token</span> using clamp</span></li>
+          </ul>
+          <div class="signal-row">
+            <span class="badge badge-stop">● STOP</span>
+            <span class="badge badge-go">● GO</span>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="scan-overlay"></div>
+          <h3>Rules</h3>
+          <ul class="rules-list">
+            <li><span class="rule-letter">A</span><span>All movements and decisions must be <strong style="color:#c8dff0">autonomous</strong></span></li>
+            <li><span class="rule-letter">B</span><span>Teams may use mobile phones or lights to illuminate the <strong style="color:#c8dff0">April tag</strong> for better clarity</span></li>
+            <li><span class="rule-letter">C</span><span>An attempt <strong style="color:var(--red)">ends</strong> when the token is dropped</span></li>
+            <li><span class="rule-letter">D</span><span>No other QR codes or reference signs can be added</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Diagram -->
+      <div class="diagram-panel">
+        <div class="diagram-label">◈ Route Diagram</div>
+        <svg viewBox="0 0 420 180" height="180">
+          <defs>
+            <marker id="arr1" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#00d4ff"/>
+            </marker>
+            <filter id="glow1">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- START PLATFORM -->
+          <rect x="8" y="110" width="80" height="6" rx="1" fill="#1a3a5c" stroke="#00d4ff" stroke-width="1"/>
+          <text x="48" y="130" class="label" text-anchor="middle">START POINT</text>
+
+          <!-- Robot SVG -->
+          <g transform="translate(20, 70)">
+            <!-- Glow -->
+            <circle cx="25" cy="28" r="22" fill="rgba(0,212,255,0.08)" class="robot-glow"/>
+            <!-- Body -->
+            <rect x="8" y="10" width="34" height="22" rx="3" class="robot-body"/>
+            <!-- Wheels -->
+            <ellipse cx="12" cy="33" rx="7" ry="5" class="robot-wheel"/>
+            <ellipse cx="38" cy="33" rx="7" ry="5" class="robot-wheel"/>
+            <!-- Camera -->
+            <rect x="32" y="14" width="10" height="8" rx="1" class="robot-camera"/>
+            <circle cx="37" cy="18" r="3" fill="#ff9955"/>
+            <!-- Sensor light -->
+            <circle cx="16" cy="16" r="3" class="robot-sensor" filter="url(#glow1)"/>
+            <!-- Antenna -->
+            <line x1="25" y1="10" x2="25" y2="2" stroke="#00d4ff" stroke-width="1"/>
+            <circle cx="25" cy="2" r="2" fill="#00d4ff"/>
+          </g>
+
+          <!-- Signal waves from robot -->
+          <g transform="translate(68, 90)">
+            <path class="signal-wave" d="M0,0 Q8,-8 0,-16" style="animation-delay:0s"/>
+            <path class="signal-wave" d="M0,0 Q14,-10 0,-20" style="animation-delay:0.4s"/>
+            <path class="signal-wave" d="M0,0 Q20,-13 0,-26" style="animation-delay:0.8s"/>
+          </g>
+
+          <!-- STOP sign -->
+          <rect x="100" y="68" width="28" height="28" rx="2" class="stop-box"/>
+          <text x="114" y="87" font-family="Orbitron,sans-serif" font-size="8" fill="white" text-anchor="middle" font-weight="700">STOP</text>
+          <text x="114" y="108" class="label" text-anchor="middle">RED</text>
+
+          <!-- GO sign -->
+          <rect x="138" y="68" width="28" height="28" rx="2" class="go-box"/>
+          <text x="152" y="87" font-family="Orbitron,sans-serif" font-size="8" fill="#001a00" text-anchor="middle" font-weight="700">GO</text>
+          <text x="152" y="108" class="label" text-anchor="middle">GREEN</text>
+
+          <!-- Route line from robot to token -->
+          <line x1="100" y1="114" x2="270" y2="114" class="route-line" marker-end="url(#arr1)"/>
+
+          <!-- Token/Crate with April Tag -->
+          <g transform="translate(270, 88)">
+            <rect x="0" y="0" width="36" height="36" rx="2" class="token-body"/>
+            <!-- April tag pattern -->
+            <rect x="6" y="6" width="24" height="24" rx="1" class="token-tag"/>
+            <rect x="10" y="10" width="7" height="7" fill="#c8860a"/>
+            <rect x="19" y="10" width="7" height="7" fill="#0d1f33"/>
+            <rect x="10" y="19" width="7" height="7" fill="#0d1f33"/>
+            <rect x="19" y="19" width="7" height="7" fill="#c8860a"/>
+            <rect x="13" y="13" width="10" height="10" fill="#c8860a"/>
+            <text x="18" y="48" class="label" text-anchor="middle">APRIL TAG</text>
+            <text x="18" y="58" class="label" text-anchor="middle">+ TOKEN</text>
+          </g>
+
+          <!-- Route to Part 2 -->
+          <line x1="308" y1="114" x2="400" y2="114" class="route-line" marker-end="url(#arr1)"/>
+          <text x="395" y="108" class="label-big" text-anchor="end">PART 2 ▶</text>
+
+          <!-- Clamp indicator -->
+          <g transform="translate(278, 58)">
+            <line x1="0" y1="0" x2="0" y2="12" stroke="var(--accent3)" stroke-width="1.5"/>
+            <line x1="-6" y1="12" x2="6" y2="12" stroke="var(--accent3)" stroke-width="1.5"/>
+            <line x1="-6" y1="12" x2="-6" y2="18" stroke="var(--accent3)" stroke-width="1.5"/>
+            <line x1="6" y1="12" x2="6" y2="18" stroke="var(--accent3)" stroke-width="1.5"/>
+            <text x="12" y="12" class="label" fill="var(--accent3)" font-size="8">CLAMP</text>
+          </g>
+        </svg>
+        <div class="info-strip"><strong>Autonomous Only</strong> — Robot must detect colour signals independently. April tag centralisation required before pickup.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="part-divider"><div class="divider-dot"></div></div>
+
+  <!-- ════════════════════════════════════════════
+       PART 2
+  ════════════════════════════════════════════ -->
+  <section class="part" style="animation-delay:0.8s">
+    <div class="part-header">
+      <div class="part-num">Part 02</div>
+      <h2>GAMEPLAY</h2>
+    </div>
+    <div class="part-aim">▸ AIM: Use of text recognition and line tracing</div>
+
+    <div class="part-body">
+      <!-- Tasks & Rules -->
+      <div>
+        <div class="panel" style="margin-bottom:16px">
+          <div class="scan-overlay"></div>
+          <h3>Tasks</h3>
+          <ul class="task-list">
+            <li><span class="task-letter">A</span><span>Robot recognises text <span class="hl">"LEFT"</span> or <span class="hl">"RIGHT"</span> <em style="color:var(--muted)">(judge will assign)</em></span></li>
+            <li><span class="task-letter">B</span><span>Robot <span class="hl">moves to path</span> corresponding to text recognised</span></li>
+            <li><span class="task-letter">C</span><span>Robot <span class="hl">navigates path</span> using line tracing</span></li>
+          </ul>
+          <div class="info-strip" style="margin-top:12px"><strong>Note:</strong> Direction assigned by judge at runtime.</div>
+        </div>
+        <div class="panel">
+          <div class="scan-overlay"></div>
+          <h3>Rules</h3>
+          <ul class="rules-list">
+            <li><span class="rule-letter">A</span><span>All movements and decisions must be <strong style="color:#c8dff0">autonomous</strong></span></li>
+            <li><span class="rule-letter">B</span><span>Teams may use mobile phones or lights to illuminate the <strong style="color:#c8dff0">text sheets</strong> for better clarity</span></li>
+            <li><span class="rule-letter">C</span><span>An attempt <strong style="color:var(--red)">ends</strong> when the token is dropped</span></li>
+            <li><span class="rule-letter">D</span><span>No other QR codes or reference signs can be added</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Diagram -->
+      <div class="diagram-panel">
+        <div class="diagram-label">◈ Route Diagram</div>
+        <svg viewBox="0 0 420 200" height="200">
+          <defs>
+            <marker id="arr2" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#00d4ff"/>
+            </marker>
+          </defs>
+
+          <!-- Robot -->
+          <g transform="translate(10, 66)">
+            <circle cx="25" cy="28" r="20" fill="rgba(0,212,255,0.06)" class="robot-glow"/>
+            <rect x="8" y="10" width="34" height="22" rx="3" class="robot-body"/>
+            <ellipse cx="12" cy="33" rx="7" ry="5" class="robot-wheel"/>
+            <ellipse cx="38" cy="33" rx="7" ry="5" class="robot-wheel"/>
+            <rect x="32" y="14" width="10" height="8" rx="1" class="robot-camera"/>
+            <circle cx="37" cy="18" r="3" fill="#ff9955"/>
+            <circle cx="16" cy="16" r="3" class="robot-sensor"/>
+            <line x1="25" y1="10" x2="25" y2="2" stroke="#00d4ff" stroke-width="1"/>
+            <circle cx="25" cy="2" r="2" fill="#00d4ff"/>
+          </g>
+
+          <!-- Signal from robot -->
+          <g transform="translate(58, 90)">
+            <path class="signal-wave" d="M0,0 Q8,-8 0,-16" style="animation-delay:0s"/>
+            <path class="signal-wave" d="M0,0 Q14,-10 0,-20" style="animation-delay:0.4s"/>
+          </g>
+
+          <!-- Text sign card -->
+          <rect x="72" y="74" width="38" height="18" rx="2" fill="#0d1f33" stroke="#00d4ff" stroke-width="1.5"/>
+          <text x="91" y="86" font-family="Orbitron,sans-serif" font-size="7" fill="white" text-anchor="middle" font-weight="700">LEFT</text>
+          <text x="91" y="98" class="label" text-anchor="middle">or</text>
+          <rect x="72" y="100" width="38" height="18" rx="2" fill="#0d1f33" stroke="#00d4ff" stroke-width="1.5"/>
+          <text x="91" y="112" font-family="Orbitron,sans-serif" font-size="7" fill="white" text-anchor="middle" font-weight="700">RIGHT</text>
+          <text x="91" y="130" class="label" text-anchor="middle">TEXT CARD</text>
+
+          <!-- Route to fork -->
+          <line x1="112" y1="100" x2="168" y2="100" class="route-line" marker-end="url(#arr2)"/>
+
+          <!-- Fork point -->
+          <circle cx="175" cy="100" r="4" fill="var(--accent)" opacity="0.8"/>
+
+          <!-- LEFT path (upper arc) -->
+          <path d="M175,100 C200,100 200,46 240,46 C280,46 300,46 320,46 C360,46 360,100 380,100" class="route-solid" stroke-dasharray="none"/>
+          <!-- LEFT label -->
+          <text x="278" y="38" class="label-bright" text-anchor="middle">LEFT PATH</text>
+
+          <!-- RIGHT path (lower arc) -->
+          <path d="M175,100 C200,100 200,154 240,154 C280,154 300,154 320,154 C360,154 360,100 380,100" class="route-solid"/>
+          <!-- RIGHT label -->
+          <text x="278" y="170" class="label-bright" text-anchor="middle">RIGHT PATH</text>
+
+          <!-- Merge point -->
+          <circle cx="383" cy="100" r="4" fill="var(--accent)" opacity="0.8"/>
+
+          <!-- Line tracing indicator on LEFT -->
+          <g>
+            <line x1="250" y1="46" x2="310" y2="46" stroke="var(--accent3)" stroke-width="2" stroke-dasharray="3 3" opacity="0.5"/>
+            <text x="280" y="27" class="label" fill="var(--accent3)" text-anchor="middle" font-size="7">LINE TRACE</text>
+          </g>
+          <!-- Line tracing indicator on RIGHT -->
+          <g>
+            <line x1="250" y1="154" x2="310" y2="154" stroke="var(--accent3)" stroke-width="2" stroke-dasharray="3 3" opacity="0.5"/>
+            <text x="280" y="180" class="label" fill="var(--accent3)" text-anchor="middle" font-size="7">LINE TRACE</text>
+          </g>
+
+          <!-- To Part 3 -->
+          <line x1="385" y1="100" x2="415" y2="100" class="route-line" marker-end="url(#arr2)"/>
+          <text x="425" y="94" class="label-big" text-anchor="end">PART 3 ▶</text>
+        </svg>
+        <div class="info-strip"><strong>Line Tracing Required</strong> — Robot must follow the physical track on the floor. Both paths lead to Part 3.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="part-divider"><div class="divider-dot"></div></div>
+
+  <!-- ════════════════════════════════════════════
+       PART 3
+  ════════════════════════════════════════════ -->
+  <section class="part" style="animation-delay:1.0s">
+    <div class="part-header">
+      <div class="part-num">Part 03</div>
+      <h2>GAMEPLAY</h2>
+    </div>
+    <div class="part-aim">▸ AIM: Use of pose recognition, face recognition and algorithm for positioning</div>
+
+    <div class="part-body">
+      <!-- Tasks & Rules -->
+      <div>
+        <div class="panel" style="margin-bottom:16px">
+          <div class="scan-overlay"></div>
+          <h3>Tasks</h3>
+          <ul class="task-list">
+            <li><span class="task-letter">A</span><span>Robot <span class="hl">recognizes pose</span> and moves accordingly</span></li>
+            <li><span class="task-letter">B</span><span>Robot <span class="hl">stops within Box A</span></span></li>
+            <li><span class="task-letter">C</span><span>Robot <span class="hl">rotates/moves autonomously</span> and looks for correct face <em style="color:var(--muted)">(judge will assign)</em></span></li>
+            <li><span class="task-letter">D</span><span>Robot <span class="hl">moves to correct face</span> and centralises</span></li>
+            <li><span class="task-letter">E</span><span>Robot <span class="hl">moves to Box B</span> and places token within Box B</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="scan-overlay"></div>
+          <h3>Rules</h3>
+          <ul class="rules-list">
+            <li><span class="rule-letter">A</span><span>Movement up to Box A must be using <strong style="color:#c8dff0">pose recognition</strong></span></li>
+            <li><span class="rule-letter">B</span><span>All movements after reaching Box A must be <strong style="color:#c8dff0">autonomous</strong></span></li>
+            <li><span class="rule-letter">C</span><span>Teams may use mobile phones or lights to illuminate the <strong style="color:#c8dff0">faces</strong> for better clarity</span></li>
+            <li><span class="rule-letter">D</span><span>An attempt <strong style="color:var(--red)">ends</strong> when the token is dropped</span></li>
+            <li><span class="rule-letter">E</span><span>No other QR codes or reference signs can be added</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Diagram -->
+      <div class="diagram-panel">
+        <div class="diagram-label">◈ Route Diagram</div>
+        <svg viewBox="0 0 420 230" height="230">
+          <defs>
+            <marker id="arr3" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#00d4ff"/>
+            </marker>
+            <marker id="arr3g" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#00ff88"/>
+            </marker>
+            <marker id="arr3m" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+              <polygon points="0 0, 8 3, 0 6" fill="#5a7a9a"/>
+            </marker>
+          </defs>
+
+          <!-- Robot -->
+          <g transform="translate(8, 92)">
+            <circle cx="25" cy="28" r="20" fill="rgba(0,212,255,0.06)" class="robot-glow"/>
+            <rect x="8" y="10" width="34" height="22" rx="3" class="robot-body"/>
+            <ellipse cx="12" cy="33" rx="7" ry="5" class="robot-wheel"/>
+            <ellipse cx="38" cy="33" rx="7" ry="5" class="robot-wheel"/>
+            <rect x="32" y="14" width="10" height="8" rx="1" class="robot-camera"/>
+            <circle cx="37" cy="18" r="3" fill="#ff9955"/>
+            <circle cx="16" cy="16" r="3" class="robot-sensor"/>
+            <line x1="25" y1="10" x2="25" y2="2" stroke="#00d4ff" stroke-width="1"/>
+            <circle cx="25" cy="2" r="2" fill="#00d4ff"/>
+          </g>
+
+          <!-- Laptop / Pose icon -->
+          <g transform="translate(58, 88)">
+            <rect x="0" y="0" width="32" height="22" rx="2" fill="#0d1f33" stroke="#5a7a9a" stroke-width="1"/>
+            <rect x="3" y="2" width="26" height="17" fill="#1a3a5c"/>
+            <!-- hand pose symbols -->
+            <line x1="9" y1="5" x2="9" y2="14" stroke="var(--accent3)" stroke-width="1.5"/>
+            <line x1="12" y1="4" x2="12" y2="14" stroke="var(--accent3)" stroke-width="1.5"/>
+            <line x1="15" y1="5" x2="15" y2="14" stroke="var(--accent3)" stroke-width="1.5"/>
+            <line x1="18" y1="6" x2="18" y2="14" stroke="var(--accent3)" stroke-width="1.5"/>
+            <line x1="21" y1="7" x2="21" y2="14" stroke="var(--accent3)" stroke-width="1.5"/>
+            <rect x="0" y="22" width="32" height="4" rx="1" fill="#1a3a5c" stroke="#5a7a9a" stroke-width="1"/>
+            <text x="16" y="34" class="label" text-anchor="middle" font-size="7">POSE CTRL</text>
+          </g>
+
+          <!-- Arrow robot to BOX A -->
+          <line x1="100" y1="118" x2="168" y2="118" class="route-line" marker-end="url(#arr3)"/>
+          <text x="134" y="112" class="label" text-anchor="middle" fill="var(--accent3)" font-size="7">POSE RECOG.</text>
+
+          <!-- BOX A -->
+          <rect x="170" y="100" width="44" height="36" rx="2" class="box-a"/>
+          <text x="192" y="121" font-family="Orbitron,sans-serif" font-size="8" fill="var(--accent2)" text-anchor="middle" font-weight="700">BOX A</text>
+          <text x="192" y="145" class="label" text-anchor="middle">STOP HERE</text>
+
+          <!-- Rotation indicator around BOX A -->
+          <text x="250" y="130" class="label" fill="var(--accent)" font-size="7">SCAN</text>
+
+          <!-- 4 BOX B locations with faces -->
+          <!-- Top-left BOX A -->
+          <g transform="translate(270, 30)">
+            <rect x="0" y="0" width="36" height="36" rx="2" class="box-b"/>
+            <!-- Face: glasses boy -->
+            <circle cx="18" cy="14" r="9" fill="#2a4a6a" stroke="#5a7a9a" stroke-width="1"/>
+            <circle cx="14" cy="13" r="2.5" fill="none" stroke="#c8dff0" stroke-width="1"/>
+            <circle cx="22" cy="13" r="2.5" fill="none" stroke="#c8dff0" stroke-width="1"/>
+            <line x1="11.5" y1="13" x2="14" y2="13" stroke="#c8dff0" stroke-width="1"/>
+            <line x1="22" y1="13" x2="24.5" y2="13" stroke="#c8dff0" stroke-width="1"/>
+            <path d="M14,18 Q18,22 22,18" fill="none" stroke="#c8dff0" stroke-width="1"/>
+            <text x="18" y="46" class="label" text-anchor="middle">BOX A</text>
+          </g>
+
+          <!-- Top-right BOX B -->
+          <g transform="translate(364, 30)">
+            <rect x="0" y="0" width="36" height="36" rx="2" class="box-b"/>
+            <!-- Face: girl with hair -->
+            <circle cx="18" cy="14" r="9" fill="#2a4a6a" stroke="#5a7a9a" stroke-width="1"/>
+            <path d="M9,10 Q18,2 27,10" fill="#7b2fff" opacity="0.6"/>
+            <circle cx="14" cy="14" r="1.5" fill="#c8dff0"/>
+            <circle cx="22" cy="14" r="1.5" fill="#c8dff0"/>
+            <path d="M14,19 Q18,23 22,19" fill="none" stroke="#c8dff0" stroke-width="1"/>
+            <text x="18" y="46" class="label" text-anchor="middle">BOX B</text>
+          </g>
+
+          <!-- Bottom-left BOX C -->
+          <g transform="translate(270, 160)">
+            <rect x="0" y="0" width="36" height="36" rx="2" class="box-b"/>
+            <!-- Face: girl with ponytail -->
+            <circle cx="18" cy="14" r="9" fill="#2a4a6a" stroke="#5a7a9a" stroke-width="1"/>
+            <path d="M18,5 Q26,0 28,8" fill="none" stroke="#7b2fff" stroke-width="2.5" opacity="0.7"/>
+            <circle cx="14" cy="14" r="1.5" fill="#c8dff0"/>
+            <circle cx="22" cy="14" r="1.5" fill="#c8dff0"/>
+            <path d="M14,19 Q18,22 22,19" fill="none" stroke="#c8dff0" stroke-width="1"/>
+            <text x="18" y="46" class="label" text-anchor="middle">BOX C</text>
+          </g>
+
+          <!-- Bottom-right BOX D -->
+          <g transform="translate(364, 160)">
+            <rect x="0" y="0" width="36" height="36" rx="2" class="box-b"/>
+            <!-- Face: boy -->
+            <circle cx="18" cy="14" r="9" fill="#2a4a6a" stroke="#5a7a9a" stroke-width="1"/>
+            <path d="M10,10 Q18,6 26,10" fill="#3a5a7a"/>
+            <circle cx="14" cy="15" r="1.5" fill="#c8dff0"/>
+            <circle cx="22" cy="15" r="1.5" fill="#c8dff0"/>
+            <path d="M13,20 Q18,24 23,20" fill="none" stroke="#c8dff0" stroke-width="1"/>
+            <text x="18" y="46" class="label" text-anchor="middle">BOX D</text>
+          </g>
+
+          <!-- Center junction after BOX A -->
+          <rect x="318" y="102" width="36" height="32" rx="2" fill="#0d1525" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <text x="336" y="121" font-family="Orbitron,sans-serif" font-size="6" fill="var(--accent)" text-anchor="middle" font-weight="700">FACE</text>
+          <text x="336" y="130" font-family="Orbitron,sans-serif" font-size="6" fill="var(--accent)" text-anchor="middle" font-weight="700">DETECT</text>
+
+          <!-- Lines from BOX A to center junction -->
+          <line x1="215" y1="118" x2="316" y2="118" class="route-line" marker-end="url(#arr3)"/>
+          <text x="265" y="112" class="label" fill="var(--accent2)" text-anchor="middle" font-size="7">AUTONOMOUS</text>
+
+          <!-- Highlight "correct" BOX B (top-left) as green example -->
+          <rect x="268" y="28" width="40" height="40" rx="3" fill="none" stroke="var(--green)" stroke-width="2" opacity="0.5"/>
+          <text x="288" y="22" class="label" fill="var(--green)" text-anchor="middle" font-size="7">CORRECT ✓</text>
+
+          <!-- Token drop label -->
+          <text x="288" y="85" class="label" fill="var(--accent3)" text-anchor="middle" font-size="7">TOKEN DROP</text>
+        </svg>
+        <div class="info-strip"><strong>Two-Phase Movement:</strong> Pose recognition up to Box A → Fully autonomous face detection and Box B placement after.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>◈ PRELIMINARY GAMEPLAY GUIDE ◈</p>
+    <p style="margin-top:6px; font-size:0.6rem">ALL MOVEMENTS MUST BE AUTONOMOUS · NO EXTERNAL QR CODES · ATTEMPT ENDS ON TOKEN DROP</p>
+  </footer>
+
+</div>
+</body>
+</html>
